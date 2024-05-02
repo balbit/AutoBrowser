@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Interaction Recorder",
+  "version": "1.0",
+  "permissions": [
+    "storage",
+    "tabs",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "background": {
+    "service_worker": "dist/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["dist/content-script.js"]
+    }
+  ]
+}
