@@ -37,3 +37,31 @@ document.addEventListener('keydown', (event) => {
     handleEvent('keydown', event);
     console.log(`Key pressed: ${evt.key}`);
 });
+
+let sidebarFrame: HTMLIFrameElement | null = null;
+
+chrome.runtime.onMessage.addListener((message: { action: string }, sender, sendResponse) => {
+  if (message.action === "toggleSidebar") {
+    toggleSidebar();
+  }
+});
+
+function toggleSidebar(): void {
+  if (!sidebarFrame) {
+    sidebarFrame = document.createElement('iframe');
+    sidebarFrame.style.cssText = `
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100%;
+      border: none;
+      z-index: 1000000;  // Ensure high z-index to be on top of other elements
+    `;
+    sidebarFrame.src = chrome.runtime.getURL('sidebar.html');
+    document.body.appendChild(sidebarFrame);
+  } else {
+    sidebarFrame.style.display = sidebarFrame.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
